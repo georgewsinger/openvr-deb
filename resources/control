@@ -1,0 +1,36 @@
+Source: openvr
+
+# "As you may have noticed, the Debian archive is divided into multiple areas: main (the free software), non-free (the not really free software) and contrib (free software that depends on non-free software). Each of these is divided into sections that classify packages into rough categories. So we have admin for administrator-only programs, devel for programmer tools, doc for documentation, libs for libraries, mail for email readers and daemons, net for network apps and daemons, x11 for X11 programs that don't fit anywhere else, and many more. [28]
+# Let's change it then to x11. (A main/ prefix is implied so we can omit it.)"
+Section: x11
+
+# "Line 3 describes how important it is that the user installs this package. [29]
+#  The optional priority will usually work for new packages that do not conflict with others claiming required, important, or standard priority."
+Priority: optional
+
+Maintainer: George Singer <george.w.singer@gmail.com>
+
+
+# "Line 5 includes the list of packages required to build your package as the Build-Depends field. You can also have the Build-Depends-Indep field as an additional line here. [30] Some packages like gcc and make which are required by the build-essential package are implied. If you need to have other tools to build your package, you should add them to these fields. Multiple entries are separated with commas; read on for the explanation of binary package dependencies to find out more about the syntax of these lines."
+# NOTE: Simula will ultimately have to specify stack, etc here.
+# To see instructions for how to get Build-Depends field, see:
+# https://www.debian.org/doc/manuals/maint-guide/dreq.en.html#control
+Build-Depends: debhelper (>= 10)
+
+Standards-Version: 4.1.2
+Homepage: https://github.com/ValveSoftware/openvr
+#Vcs-Git: https://github.com/ValveSoftware/openvr.git
+Package: openvr
+Architecture: any
+
+# 1. "dh_shlibdeps(1) calculates shared library dependencies for binary packages. It generates a list of ELF executables and shared libraries it has found for each binary package. This list is used for substituting ${shlibs:Depends}."
+# 2. "Some debhelper commands may cause the generated package to depend on some additional packages. All such commands generate a list of required packages for each binary package. This list is used for substituting ${misc:Depends}."
+# 3. For now we depend on steam.
+Depends: ${shlibs:Depends}, ${misc:Depends}, steam
+
+# TODO: Is steam strictly needed for openvr to build? Or just to run?
+# Suggests: steam
+
+# 60 character line limit; newlines must be indented with a single space.
+Description: Valve's API and runtime that allows access to 
+ VR hardware from multiple vendors.

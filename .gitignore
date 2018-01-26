@@ -1,0 +1,6 @@
+# Ignore tars avoid GitHub file size limits:
+openvr*.tar.gz
+
+# Ignore sources since we're generating these automatically anyway:
+openvr-1.0.11
+openvr-1.0.11/*
