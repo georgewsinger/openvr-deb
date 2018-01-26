@@ -1,6 +1,21 @@
-# Ignore tars avoid GitHub file size limits:
+# Ignore tars and such to avoid GitHub file size limits; we generate these files from scratch
 openvr*.tar.gz
+openvr*.deb
+openvr*.changes
+openvr*.buildinfo
+openvr*.xz
+openvr*.dsc
+
+# openvr_1.0.11-1.debian.tar.xz  
+# openvr_1.0.11-1_amd64.buildinfo  
+# openvr_1.0.11-1.dsc            
+# openvr_1.0.11-1_amd64.changes    
+# openvr_1.0.11.orig.tar.gz
+# openvr_1.0.11-1_amd64.deb        
+# openvr-1.0.11.tar.gz
 
 # Ignore sources since we're generating these automatically anyway:
 openvr-1.0.11
 openvr-1.0.11/*
+
+

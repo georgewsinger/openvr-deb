@@ -1,20 +1,3 @@
-# generateOpenVRBuildEnvironment() {
-#     cd ~
-#     mkdir openvr-deb
-#     cd openvr-deb
-
-#     git clone https://github.com/ValveSoftware/openvr.git openvr-1.0.11
-#     cd openvr-1.0.11
-#     git checkout tags/v1.0.11
-#     cd ..
-
-#     # tar -cvzf openvr-1.0.11.tar.gz openvr-1.0.11 --exclude-vcs
-
-#     git init
-#     git add .
-#     git commit -m 'First commit w/openvr-1.0.11.'
-# }
-
 installDebHelpers() {
   sudo apt install  \
     autoconf        \
@@ -137,8 +120,8 @@ buildPackage() {
   # 1. openvr_1.0.11.orig.tar.gz
   # 2. openvr_1.0.11-1.dsc: Generated from debian/control; used by dpkg-source; needs debsigned
   # 3. openvr_1.0.11-1.debian.tar.gz: Contains debian/* with patches in debian/patches
-  # 4. openvr_1.0.11-1_i386.deb
-  # 5. openvr_1.0.11-1_i386.changes: Needs debsigned.
+  # 4. openvr_1.0.11-1_amd64.deb
+  # 5. openvr_1.0.11-1_amd64.changes: Needs debsigned.
   # With (1)-(3), you can run `dpkg-source -x gentoo_0.9.12-1.dsc` to completely recreate the package from scratch.
 
   # FOOTNOTE 1: 
@@ -158,7 +141,7 @@ verifyPackageInstallation() {
   ls -tlra | grep change-                # verify this is empty; if it's not, it means "files were changed by accident or the build script modified the upstream source"
 
   cd ../..
-  sudo debi openvr_1.0.11-1_i386.changes # tests whether your package installs w/o problems
+  sudo debi openvr_1.0.11-1_amd64.changes # tests whether your package installs w/o problems
 
   # lintian only required if you build mannually w/dpkg-buildpackage as opposed to debuild (which wraps lintian); lintian codes:
   #   E: Error
@@ -166,13 +149,13 @@ verifyPackageInstallation() {
   #   I: Info
   #   N: Note
   #   O: Overriden (you can set overrides via `lintian-overrides` file
-  lintian -i -I --show-overrides openvr_1.0.11-1_i386.changes
+  lintian -i -I --show-overrides openvr_1.0.11-1_amd64.changes
 
   # TRIAGED since we're not using "maintainer scripts"
   # 
   # sudo dpkg -r openvr
   # sudo dpkg -P openvr
-  # sudo dpkg -i openvr_1.0.11-revision_i386.deb
+  # sudo dpkg -i openvr_1.0.11-revision_amd64.deb
 
   # TRIAGED: version conflicts
   # "If this is your first package, you should create dummy packages with different versions to test your package in advance to prevent future problems."
@@ -191,10 +174,22 @@ uploadPackage() {
    echo "TODO"
 }
 
-main() {
-  #generateOpenVRBuildEnvironment
-  installDebHelpers
-  exportDebianEnvironmentVariables
+cleanRoot() {
+    sudo rm openvr_1.0.11-1_amd64.buildinfo
+    sudo rm openvr_1.0.11-1_amd64.changes
+    sudo rm openvr_1.0.11-1_amd64.deb
+    sudo rm openvr_1.0.11-1_amd64.tar.xz
+    sudo rm openvr_1.0.11-1.dsc
+    sudo rm openvr_1.0.11.orig.tar.gz
+    sudo rm openvr_1.0.11.tar.gz
+    sudo rm openvr_1.0.11-1.debian.tar.xz
+    sudo rm openvr-1.0.11.tar.gz
+    sudo rm -r openvr-1.0.11
+}
+
+generateOpenVRDebianPackage() {
+  #installDebHelpers
+  #exportDebianEnvironmentVariables
 
   generateFreshSourceV1_0_11
   generateFreshUpstreamTarV1_0_11
@@ -209,7 +204,7 @@ main() {
 
   buildPackage
 
-  verifyPackageInstallation
+  #verifyPackageInstallation
 
   # uploadPackage
 }
