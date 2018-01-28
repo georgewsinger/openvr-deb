@@ -68,6 +68,20 @@ dh_make_openvr() {
   #         (ii) ./openvr_1.0.11.orig.tar.gz exists
 }
 
+
+# dh_make_openvr_ubuntu() {
+#     bzr dh-make openvr 1.0.11 openvr-1.0.11.tar.gz # s
+#                                                    # (i)  imports code into branch
+#                                                    # (ii) adds debian/packaging directory
+
+#     # VERIFY: (i)  ./openvr/debian/* exists
+#     #         (ii) ./openvr_1.0.11.orig.tar.gz exists
+
+#     # TODO:
+#     #cd openvr/debian
+#     #rm *ex *EX
+# }
+
 modifyDebianRulesFile() {
   # https://www.debian.org/doc/manuals/maint-guide/dreq.en.html
   cp ./resources/rules ./openvr-1.0.11/debian/rules
@@ -86,6 +100,10 @@ modifyDebianCopyrightFile() {
 modifyDebianChangelogFile() {
     # https://www.debian.org/doc/manuals/maint-guide/dreq.en.html
     cp ./resources/changelog ./openvr-1.0.11/debian/changelog
+}
+
+modifyDebianInstallFile() {
+    cp ./resources/install ./openvr-1.0.11/debian/install
 }
 
 deleteUnneededDebianFiles() {
@@ -175,15 +193,15 @@ uploadPackage() {
 }
 
 cleanRoot() {
-    sudo rm openvr_1.0.11-1_amd64.buildinfo
-    sudo rm openvr_1.0.11-1_amd64.changes
-    sudo rm openvr_1.0.11-1_amd64.deb
-    sudo rm openvr_1.0.11-1_amd64.tar.xz
-    sudo rm openvr_1.0.11-1.dsc
-    sudo rm openvr_1.0.11.orig.tar.gz
-    sudo rm openvr_1.0.11.tar.gz
-    sudo rm openvr_1.0.11-1.debian.tar.xz
-    sudo rm openvr-1.0.11.tar.gz
+    sudo rm openvr*buildinfo
+    sudo rm openvr*changes
+    sudo rm openvr*deb
+    sudo rm openvr*xz
+    sudo rm openvr*dsc
+    sudo rm openvr*gz
+    sudo rm openvr*gz
+    sudo rm openvr*xz
+    sudo rm openvr*gz
     sudo rm -r openvr-1.0.11
 }
 
@@ -200,6 +218,7 @@ generateOpenVRDebianPackage() {
   modifyDebianControlFile
   modifyDebianCopyrightFile
   modifyDebianChangelogFile
+  modifyDebianInstallFile
   deleteUnneededDebianFiles
 
   buildPackage
